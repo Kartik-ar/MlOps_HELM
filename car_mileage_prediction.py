@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
+from scipy.sparse import data
 from sklearn.model_selection import train_test_split
-from flask import Flask, request, render_template
-
+from flask import Flask, request, render_template, jsonify
+from flask_cors import CORS
 
 def data_clean(data):
   ds = pd.read_csv(data)
@@ -96,6 +97,23 @@ def LR(x_train,y_train,x_test,y_test):
 
   return lr_pred, LR.score(x_train,y_train), metrics.mean_squared_error(y_test,lr_pred)
 
+def cov_key(D,y):
+  d = {"RF":{"values":[], "score": "", "MSE" : 0.0}, 
+        "LR":{"values":[], "score": "", "MSE" : 0.0},
+        "NB":{"values":[], "score": "", "MSE" : 0.0},
+        "KNN":{"values":[], "score": "", "MSE" : 0.0},
+        "actual":{"values": y}}
+  old=[]
+  new=[]
+  for x in D.keys():
+    old.append(x)
+  for x in d.keys():
+    new.append(x)
+  for i in range(len(old)):
+	  d[new[i]] = D.pop(old[i]) 
+  return d
+
+
 """
 x,y,z= RF_prediction(x_train,y_train,x_test,y_test)
 
@@ -103,19 +121,29 @@ print(f"values : {x}, score : {round(y*100)}%, MSE : {z}")
 """
 
 app = Flask('Car_Mileage_Detection')
+CORS(app)
 
 @app.route('/preds', methods=['GET', 'POST'])
 def pred_val():
-  data = request.args.get("ds-path")
-  D = {RF_prediction:{'values':[], 'score': '', 'MSE' : 0.0}, 
-        LR:{'values':[], 'score': '', 'MSE' : 0.0},
-        NB:{'values':[], 'score': '', 'MSE' : 0.0},
-        KNN:{'values':[], 'score': '', 'MSE' : 0.0}}
-  #'/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv'
-  x_train, x_test, y_train, y_test = data_clean(data)
-  for fc in D.keys():
-    x,y,z= fc(x_train,y_train,x_test,y_test)
-    D[fc]['values'], D[fc]['score'], D[fc]['MSE'] = x, f"{round(y*100)}%", z
-  return f"<pre> {D} </pre>"
+    data = "/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv"#request.args.get("ds-path")
+    funcs = [RF_prediction,LR,NB,KNN]
+    x_train, x_test, y_train, y_test = data_clean(data)
+    y=[]
+    for i in y_test:
+        y.append(int(i))
+    D = {RF_prediction:{"values":[], "score": "", "MSE" : 0.0}, 
+        LR:{"values":[], "score": "", "MSE" : 0.0},
+        NB:{"values":[], "score": "", "MSE" : 0.0},
+        KNN:{"values":[], "score": "", "MSE" : 0.0},
+        "actual":{"values": y}}
+#'/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv'  
+    for fc in D.keys():
+      if fc == "actual":
+        pass
+      else:
+        x,y,z= fc(x_train,y_train,x_test,y_test)
+        D[fc]["values"], D[fc]["score"], D[fc]["MSE"] = list(x), f"{round(y*100)}%", z
+    d = cov_key(D,y)
+    return f'{d}'
 
 app.run(host="0.0.0.0", port=5960, debug=True)

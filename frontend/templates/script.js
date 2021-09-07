@@ -1,7 +1,7 @@
 async function show(){
     const xhttp = new XMLHttpRequest();
       // Send a request
-    xhttp.open("GET", "hello"+"/preds?ds-path=/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv");
+    xhttp.open("GET", "http://13.232.125.123:30007/preds");
     await xhttp.send();
     xhttp.onload = function() {
         const obj = this.responseText;
@@ -38,7 +38,7 @@ async function show(){
 async function score(){
   const xhttp = new XMLHttpRequest();
     // Send a request
-  xhttp.open("GET", "hello"+"/preds?ds-path=/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv");
+  xhttp.open("GET", "http://13.232.125.123:30007/preds");
   await xhttp.send();
   xhttp.onload = function() {
       const obj = this.responseText;
@@ -67,7 +67,7 @@ async function score(){
   async function mse(){
     const xhttp = new XMLHttpRequest();
       // Send a request
-    xhttp.open("GET", "hello"+"/preds?ds-path=/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv");
+    xhttp.open("GET", "http://13.232.125.123:30007/preds");
     await xhttp.send();
     xhttp.onload = function() {
         const obj = this.responseText;

@@ -125,7 +125,7 @@ CORS(app)
 
 @app.route('/preds', methods=['GET', 'POST'])
 def pred_val():
-    data = "/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv"#request.args.get("ds-path")
+    data = "/auto-mpg.csv"#request.args.get("ds-path")
     funcs = [RF_prediction,LR,NB,KNN]
     x_train, x_test, y_train, y_test = data_clean(data)
     y=[]

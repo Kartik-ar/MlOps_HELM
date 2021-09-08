@@ -1,7 +1,7 @@
 async function show(){
     const xhttp = new XMLHttpRequest();
       // Send a request
-    xhttp.open("GET", "http://13.232.125.123:30007/preds");
+    xhttp.open("GET", "http://13.234.239.157:30007/preds");
     await xhttp.send();
     xhttp.onload = function() {
         const obj = this.responseText;
@@ -38,7 +38,7 @@ async function show(){
 async function score(){
   const xhttp = new XMLHttpRequest();
     // Send a request
-  xhttp.open("GET", "http://13.232.125.123:30007/preds");
+  xhttp.open("GET", "http://13.234.239.157:30007/preds");
   await xhttp.send();
   xhttp.onload = function() {
       const obj = this.responseText;
@@ -67,7 +67,7 @@ async function score(){
   async function mse(){
     const xhttp = new XMLHttpRequest();
       // Send a request
-    xhttp.open("GET", "http://13.232.125.123:30007/preds");
+    xhttp.open("GET", "http://13.234.239.157:30007/preds");
     await xhttp.send();
     xhttp.onload = function() {
         const obj = this.responseText;
@@ -75,7 +75,7 @@ async function score(){
         var D = JSON.parse(data);
         //var RF_val = D.RF_prediction.values
         //var LR_val = D.LR.values
-        var t = "<label> Scores Of all Models </label> <br> <table class='values'> <tr>\
+        var t = "<label> Mean Square Error for all Models </label> <br> <table class='values'> <tr>\
         <th> Random Forest </th> \
         <th> Linear Regression </th>\
         <th> Naive Bayes </th>\

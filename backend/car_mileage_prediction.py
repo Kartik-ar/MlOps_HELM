@@ -14,13 +14,6 @@ def data_clean(data):
   Y = ds['mpg']
   x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
   return x_train, x_test, y_train, y_test
-"""
-data = '/Users/kartik_rama_arora/Documents/Python_ws/Helm_task-24/auto-mpg.csv'
-x_train, x_test, y_train, y_test = data_clean(data)
-
-x_train.isnull().sum()
-"""
-"""## Training Model"""
 
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import KFold
@@ -114,11 +107,6 @@ def cov_key(D,y):
   return d
 
 
-"""
-x,y,z= RF_prediction(x_train,y_train,x_test,y_test)
-
-print(f"values : {x}, score : {round(y*100)}%, MSE : {z}")
-"""
 
 app = Flask('Car_Mileage_Detection')
 CORS(app)
